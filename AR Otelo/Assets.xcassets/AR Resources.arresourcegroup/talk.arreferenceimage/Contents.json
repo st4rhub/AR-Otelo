@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "talk.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "unit" : "centimeters",
+    "width" : 42.25352112676056
+  }
+}

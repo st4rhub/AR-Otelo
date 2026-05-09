@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "calm.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "unit" : "centimeters",
+    "width" : 23.316062176165804
+  }
+}

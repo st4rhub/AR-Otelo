@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "proud.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "unit" : "centimeters",
+    "width" : 27.692307692307693
+  }
+}

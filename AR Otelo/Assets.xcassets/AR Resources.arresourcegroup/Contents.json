@@ -1,0 +1,71 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "resources" : [
+    {
+      "filename" : "1984.arreferenceimage"
+    },
+    {
+      "filename" : "calm.arreferenceimage"
+    },
+    {
+      "filename" : "cat.arreferenceimage"
+    },
+    {
+      "filename" : "dance.arreferenceimage"
+    },
+    {
+      "filename" : "fly.arreferenceimage"
+    },
+    {
+      "filename" : "group-1.arreferenceimage"
+    },
+    {
+      "filename" : "group-2.arreferenceimage"
+    },
+    {
+      "filename" : "Gruppe-nach-links.arreferenceimage"
+    },
+    {
+      "filename" : "hey-drown.arreferenceimage"
+    },
+    {
+      "filename" : "judge.arreferenceimage"
+    },
+    {
+      "filename" : "jump.arreferenceimage"
+    },
+    {
+      "filename" : "kreativkopf.arreferenceimage"
+    },
+    {
+      "filename" : "magic.arreferenceimage"
+    },
+    {
+      "filename" : "medal.arreferenceimage"
+    },
+    {
+      "filename" : "NAcover.arreferenceimage"
+    },
+    {
+      "filename" : "proud.arreferenceimage"
+    },
+    {
+      "filename" : "sound.arreferenceimage"
+    },
+    {
+      "filename" : "talk.arreferenceimage"
+    },
+    {
+      "filename" : "verbandelt.arreferenceimage"
+    },
+    {
+      "filename" : "watch.arreferenceimage"
+    },
+    {
+      "filename" : "yes-no.arreferenceimage"
+    }
+  ]
+}

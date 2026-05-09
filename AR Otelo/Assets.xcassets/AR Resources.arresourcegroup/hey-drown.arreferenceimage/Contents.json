@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "hey-drown.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "unit" : "centimeters",
+    "width" : 24.193548387096772
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "images" : [
+    {
+      "filename" : "verbandelt.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "unit" : "centimeters",
+    "width" : 15.597920277296362
+  }
+}
