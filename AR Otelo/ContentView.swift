@@ -44,7 +44,7 @@ struct ARViewContainer: UIViewRepresentable {
 
         let arView = ARView(frame: .zero)
         
-        // Text mesh properties
+        // Basic text mesh properties
             // Variables that can be reused when we generate the text
         let materialVar = SimpleMaterial(color: .systemPink, roughness: 0, isMetallic: true)
         let depthVar: Float = 0.01
@@ -55,8 +55,8 @@ struct ARViewContainer: UIViewRepresentable {
         
         //---------------------//
         
-        // Text for Object 1 : group-1 image
-        let textMeshResource : MeshResource = .generateText("Gruppe 1",
+        // Text for Object 1 : watch image
+        let textMeshResourceWatch : MeshResource = .generateText("Schauen",
                                            extrusionDepth: depthVar,
                                            font: fontVar,
                                            containerFrame: containerFrameVar,
@@ -64,47 +64,49 @@ struct ARViewContainer: UIViewRepresentable {
                                            lineBreakMode: lineBreakModeVar)
         
         // Creates the actual entity from the properties defined above
-        let textEntity = ModelEntity(mesh: textMeshResource, materials: [materialVar])
+        let textEntityWatch = ModelEntity(mesh: textMeshResourceWatch, materials: [materialVar])
         // Create the image anchor that the text will be attached to
-        let anchor = AnchorEntity(.image(group: "AR Resources",
-                                          name: "group-1"))
+        let anchorWatch = AnchorEntity(.image(group: "AR Resources",
+                                          name: "watch"))
         
         // Attach text entity to the anchor
-        textEntity.setParent(anchor)
+        textEntityWatch.setParent(anchorWatch)
         // Add the anchor to the scene's list of anchors
-        arView.scene.anchors.append(anchor)
+        arView.scene.anchors.append(anchorWatch)
 
         
         // Creating the billboard animation (= objects looks at camera then goes back to initial position)
         // A billboard component for the textentity.
-        var billboardComponent = BillboardComponent()
+        var billboardComponentWatch = BillboardComponent()
         // Disable the billboard at the beginning by setting its blend factor to zero.
-        billboardComponent.blendFactor = 0.0
+        billboardComponentWatch.blendFactor = 0.0
         // Add the component to the entity
-        textEntity.components.set(billboardComponent)
+        textEntityWatch.components.set(billboardComponentWatch)
         // Create a transition that lasts one second
-        let billboardTransition = BillboardAction.Transition(
+        let billboardTransitionWatch = BillboardAction.Transition(
             duration: 1.0,
             timingFunction: .easeInOut
         )
         // An action that starts and ends with a one second transition.
-        let billboardAction = BillboardAction(transitionIn: billboardTransition,
-                                              transitionOut: billboardTransition)
-        let billboardAnimation = try! AnimationResource
-            .makeActionAnimation(for: billboardAction,
+        let billboardActionWatch = BillboardAction(transitionIn: billboardTransitionWatch,
+                                              transitionOut: billboardTransitionWatch)
+        let billboardAnimationWatch = try! AnimationResource
+            .makeActionAnimation(for: billboardActionWatch,
                                  duration: 3.0,
                                  bindTarget: .billboardBlendFactor)
 
 
         // Play the three second billboard animation that adjusts the blend factor.
-        textEntity.playAnimation(billboardAnimation)
+        textEntityWatch.playAnimation(billboardAnimationWatch)
         
         
         //---------------------//
         
+        // New materials for the object
+        let materialCalm = SimpleMaterial(color: .systemGray, roughness: 0, isMetallic: false)
         
         // Text for Object 2 : calm image
-        let textMeshResource2 : MeshResource = .generateText("Ruhig",
+        let textMeshResourceCalm : MeshResource = .generateText("Ruhig",
                                            extrusionDepth: depthVar,
                                            font: fontVar,
                                            containerFrame: containerFrameVar,
@@ -112,7 +114,7 @@ struct ARViewContainer: UIViewRepresentable {
                                            lineBreakMode: lineBreakModeVar)
         
         // Create text entity with previous properties
-        let textEntity2 = ModelEntity(mesh: textMeshResource2, materials: [materialVar])
+        let textEntity2 = ModelEntity(mesh: textMeshResourceCalm, materials: [materialCalm])
         
         // Create image anchor that the text entity will be attached to
         let anchor2 = AnchorEntity(.image(group: "AR Resources",
@@ -131,9 +133,12 @@ struct ARViewContainer: UIViewRepresentable {
         textEntity2.playAnimation(spinAnimation2)
         
         //---------------------//
+        
+        // New materials for the object
+        let materialMagic = SimpleMaterial(color: .systemRed, roughness: 10, isMetallic: true)
 
         // Text for Magic image
-        let magicTextMeshResource : MeshResource = .generateText("Magie",
+        let MeshResourceMagic : MeshResource = .generateText("Magie",
                                            extrusionDepth: depthVar,
                                            font: fontVar,
                                            containerFrame: containerFrameVar,
@@ -141,7 +146,7 @@ struct ARViewContainer: UIViewRepresentable {
                                            lineBreakMode: lineBreakModeVar)
         
         // Creates the actual entity from the properties defined above
-        let textEntityMagic = ModelEntity(mesh: magicTextMeshResource, materials: [materialVar])
+        let textEntityMagic = ModelEntity(mesh: MeshResourceMagic, materials: [materialMagic])
         // Create the image anchor that the text will be attached to
         let anchorMagic = AnchorEntity(.image(group: "AR Resources",
                                           name: "magic"))
@@ -175,8 +180,11 @@ struct ARViewContainer: UIViewRepresentable {
         
         //---------------------//
         
+        // New materials for the object
+        let materialDrown = SimpleMaterial(color: .systemIndigo, roughness: 5, isMetallic: false)
+        
         // Text for Drown image
-        let drownTextMeshResource : MeshResource = .generateText("Ertrinken",
+        let TextMeshResourceDrown : MeshResource = .generateText("Ertrinken",
                                            extrusionDepth: depthVar,
                                            font: fontVar,
                                            containerFrame: containerFrameVar,
@@ -184,7 +192,7 @@ struct ARViewContainer: UIViewRepresentable {
                                            lineBreakMode: lineBreakModeVar)
         
         // Creates the actual entity from the properties defined above
-        let textEntityDrown = ModelEntity(mesh: drownTextMeshResource, materials: [materialVar])
+        let textEntityDrown = ModelEntity(mesh: TextMeshResourceDrown, materials: [materialDrown])
         // Create the image anchor that the text will be attached to
         let anchorDrown = AnchorEntity(.image(group: "AR Resources",
                                           name: "hey-drown"))
@@ -196,11 +204,11 @@ struct ARViewContainer: UIViewRepresentable {
 
         // CREATING ANIMATION :
         // Create a transform to start animating from.
-        let startTransform = Transform(translation: [0.0, 2.0, 0.0])
+        let startTransform = Transform(translation: [0.0, 0.5, 0.0])
 
 
         // Create a transform to animate towards.
-        let endTransform = Transform(translation: [0.0, -2.0, 0.0])
+        let endTransform = Transform(translation: [0.0, -1, 0.0])
 
 
         // Create an action that gradually animates a transform value.
@@ -250,11 +258,11 @@ struct ARViewContainer: UIViewRepresentable {
 
         // CREATING ANIMATION :
         // Create a transform to start animating from.
-        let startTransformFly = Transform(translation: [0.0, -2.0, 0.0])
+        let startTransformFly = Transform(translation: [0.0, 0, 0.0])
 
 
         // Create a transform to animate towards.
-        let endTransformFly = Transform(translation: [0.0, 2.0, 0.0])
+        let endTransformFly = Transform(translation: [0.0, 1.0, 0.0])
 
 
         // Create an action that gradually animates a transform value.
@@ -356,6 +364,113 @@ struct ARViewContainer: UIViewRepresentable {
 
         // Play the five second animation on the entity that will cause it to move.
         textEntityProud.playAnimation(transformAnimationProud)
+        
+        //---------------------//
+        
+        // New materials for the object
+        let materialJump = SimpleMaterial(color: .systemTeal, roughness: 0, isMetallic: true)
+        
+        // Text for Jump image
+        let TextMeshResourceJump : MeshResource = .generateText("Springen",
+                                           extrusionDepth: depthVar,
+                                           font: fontVar,
+                                           containerFrame: containerFrameVar,
+                                           alignment: alignmentVar,
+                                           lineBreakMode: lineBreakModeVar)
+        
+        // Creates the actual entity from the properties defined above
+        let textEntityJump = ModelEntity(mesh: TextMeshResourceJump, materials: [materialJump])
+        // Create the image anchor that the text will be attached to
+        let anchorJump = AnchorEntity(.image(group: "AR Resources",
+                                          name: "jump"))
+        
+        // Attach text entity to the anchor
+        textEntityJump.setParent(anchorJump)
+        // Add the anchor to the scene's list of anchors
+        arView.scene.anchors.append(anchorJump)
+
+        // CREATING ANIMATION :
+        // To create the jump animation, we will combine the drown one and the fly one (with different behavior)
+        // First half : Jumping up (modelled after Fly Animation)
+        let startTransformJumpUp = Transform(translation: [0.0, 0, 0.0])
+        let endTransformJumpUp = Transform(translation: [0.0, 0.3, 0.0])
+        let jumpUpAction = FromToByAction<Transform>(from: startTransformJumpUp,
+                                                        to: endTransformJumpUp,
+                                                        mode: .parent,
+                                                        timing: .easeInOut,
+                                                        isAdditive: false)
+        let jumpUpAnimation = try! AnimationResource.makeActionAnimation(for: jumpUpAction,
+                                                                         duration: 3.0,
+                                                                         bindTarget: .transform)
+        // Second half : Jumping down (modelled after Drown Animation)
+        let startTransformJumpDown = Transform(translation: [0.0, 0.3, 0.0])
+        let endTransformJumpDown = Transform(translation: [0.0, 0, 0.0])
+        let jumpDownAction = FromToByAction<Transform>(from: startTransformJumpDown,
+                                                        to: endTransformJumpDown,
+                                                        mode: .parent,
+                                                        timing: .easeInOut,
+                                                        isAdditive: false)
+        let jumpDownAnimation = try! AnimationResource.makeActionAnimation(for: jumpDownAction,
+                                                                         duration: 2.0,
+                                                                         bindTarget: .transform)
+        
+        
+        // Create a sequence of animations that will play.
+        let animationSequenceJump = try! AnimationResource
+            .sequence(with: [jumpUpAnimation, jumpDownAnimation])
+
+
+        // Play the sequence animation that will play the action last.
+        textEntityJump.playAnimation(animationSequenceJump)
+        
+        //---------------------//
+        
+        // New materials for the object
+        let materialYesNo = SimpleMaterial(color: .systemPurple, roughness: 0, isMetallic: true)
+        
+        // Text for Yes-no image
+        let TextMeshResourceYesNo : MeshResource = .generateText("Ja-Nein",
+                                           extrusionDepth: depthVar,
+                                           font: fontVar,
+                                           containerFrame: containerFrameVar,
+                                           alignment: alignmentVar,
+                                           lineBreakMode: lineBreakModeVar)
+        
+        // Creates the actual entity from the properties defined above
+        let textEntityYesNo = ModelEntity(mesh: TextMeshResourceYesNo, materials: [materialYesNo])
+        // Create the image anchor that the text will be attached to
+        let anchorYesNo = AnchorEntity(.image(group: "AR Resources",
+                                          name: "yes-no"))
+        
+        // Attach text entity to the anchor
+        textEntityYesNo.setParent(anchorYesNo)
+        // Add the anchor to the scene's list of anchors
+        arView.scene.anchors.append(anchorYesNo)
+
+        // CREATING ANIMATION :
+        // To create the yes no animation, we will combine spin animations with half-quarter revolutions
+        
+        // Create spin animations
+        let spinAnimationYesStart = try! AnimationResource.makeActionAnimation(for: createSpinAction(axis: 0, revolutions: 0.125),
+                                                                               duration: 0.5,
+                                                                  bindTarget: .transform)
+        let spinAnimationYesEnd = try! AnimationResource.makeActionAnimation(for: createSpinAction(axis: 0, revolutions: -0.125),
+                                                                               duration: 0.5,
+                                                                  bindTarget: .transform)
+        let spinAnimationNoStart = try! AnimationResource.makeActionAnimation(for: createSpinAction(axis: 1, revolutions: -0.125),
+                                                                               duration: 0.5,
+                                                                  bindTarget: .transform)
+        let spinAnimationNoEnd = try! AnimationResource.makeActionAnimation(for: createSpinAction(axis: 1, revolutions: 0.125),
+                                                                               duration: 0.5,
+                                                                  bindTarget: .transform)
+        
+        // Create a sequence of animations that will play.
+        let animationSequenceYesNo = try! AnimationResource
+            .sequence(with: [spinAnimationYesStart, spinAnimationYesEnd, spinAnimationNoStart, spinAnimationNoEnd])
+
+
+        // Play the sequence animation that will animate nodding yes then shaking no.
+        textEntityYesNo.playAnimation(animationSequenceYesNo)
         
         return arView
     }
