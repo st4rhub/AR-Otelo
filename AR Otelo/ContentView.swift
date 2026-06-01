@@ -93,8 +93,9 @@ struct ARViewContainer: UIViewRepresentable {
         let billboardAnimationWatch = try! AnimationResource
             .makeActionAnimation(for: billboardActionWatch,
                                  duration: 3.0,
-                                 bindTarget: .billboardBlendFactor)
-
+                                 bindTarget: .billboardBlendFactor).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
         // Play the three second billboard animation that adjusts the blend factor.
         textEntityWatch.playAnimation(billboardAnimationWatch)
@@ -127,7 +128,9 @@ struct ARViewContainer: UIViewRepresentable {
         // Create spin animation (1 revolution, on the Y axis)
         let spinAnimation2 = try! AnimationResource.makeActionAnimation(for: createSpinAction(axis: 1, revolutions: 1),
                                                                   duration: 2,
-                                                                  bindTarget: .transform)
+                                                                  bindTarget: .transform).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
         // Attach the animation to the text
         textEntity2.playAnimation(spinAnimation2)
@@ -172,7 +175,9 @@ struct ARViewContainer: UIViewRepresentable {
         let opacityAnimation = try! AnimationResource
             .makeActionAnimation(for: opacityAction,
                                  duration: 5.0,
-                                 bindTarget: .opacity)
+                                 bindTarget: .opacity).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
 
         // Play the five second animation on the entity that will fade-out.
@@ -204,7 +209,7 @@ struct ARViewContainer: UIViewRepresentable {
 
         // CREATING ANIMATION :
         // Create a transform to start animating from.
-        let startTransform = Transform(translation: [0.0, 0.5, 0.0])
+        let startTransform = Transform(translation: [0.0, 0.0, 0.0])
 
 
         // Create a transform to animate towards.
@@ -229,7 +234,9 @@ struct ARViewContainer: UIViewRepresentable {
         let drownAnimation = try! AnimationResource
             .makeActionAnimation(for: drownAction,
                                  duration: 5.0,
-                                 bindTarget: .transform)
+                                 bindTarget: .transform).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
 
         // Play the five second animation on the entity that will cause it to move.
@@ -283,7 +290,9 @@ struct ARViewContainer: UIViewRepresentable {
         let flyAnimation = try! AnimationResource
             .makeActionAnimation(for: flyAction,
                                  duration: 5.0,
-                                 bindTarget: .transform)
+                                 bindTarget: .transform).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
 
         // Play the five second animation on the entity that will cause it to move.
@@ -314,7 +323,9 @@ struct ARViewContainer: UIViewRepresentable {
         // Create spin animation (5 revolutions, on the Y axis)
         let spinAnimationDance = try! AnimationResource.makeActionAnimation(for: createSpinAction(axis: 1, revolutions: 5),
                                                                   duration: 5,
-                                                                  bindTarget: .transform)
+                                                                  bindTarget: .transform).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
         // Attach the animation to the text
         textEntityDance.playAnimation(spinAnimationDance)
@@ -352,6 +363,7 @@ struct ARViewContainer: UIViewRepresentable {
                                                         mode: .parent,
                                                         timing: .easeOut,
                                                         isAdditive: false)
+        
 
 
         // A five second animation that plays an animation causing
@@ -359,8 +371,10 @@ struct ARViewContainer: UIViewRepresentable {
         let transformAnimationProud = try! AnimationResource
             .makeActionAnimation(for: transformActionProud,
                                  duration: 2.0,
-                                 bindTarget: .transform)
-
+                                 bindTarget: .transform).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
+        
 
         // Play the five second animation on the entity that will cause it to move.
         textEntityProud.playAnimation(transformAnimationProud)
@@ -417,9 +431,11 @@ struct ARViewContainer: UIViewRepresentable {
         
         // Create a sequence of animations that will play.
         let animationSequenceJump = try! AnimationResource
-            .sequence(with: [jumpUpAnimation, jumpDownAnimation])
+            .sequence(with: [jumpUpAnimation, jumpDownAnimation]).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
-
+        
         // Play the sequence animation that will play the action last.
         textEntityJump.playAnimation(animationSequenceJump)
         
@@ -466,11 +482,38 @@ struct ARViewContainer: UIViewRepresentable {
         
         // Create a sequence of animations that will play.
         let animationSequenceYesNo = try! AnimationResource
-            .sequence(with: [spinAnimationYesStart, spinAnimationYesEnd, spinAnimationNoStart, spinAnimationNoEnd])
+            .sequence(with: [spinAnimationYesStart, spinAnimationYesEnd, spinAnimationNoStart, spinAnimationNoEnd]).repeat(duration: .infinity)
+        
+        // (The .repeat parameter allows the animation to loop indefinitely)
 
-
+        
         // Play the sequence animation that will animate nodding yes then shaking no.
         textEntityYesNo.playAnimation(animationSequenceYesNo)
+
+        
+        //---------------------//
+        
+        // Displays image
+        // The image has to be loaded in the Assets folder, NOT in "Assets > AR Resources"
+        var materialJudge = SimpleMaterial()
+        
+        //Basically we create a very thin box (which will look like a rectangle) and we apply the image we want to display as a texture
+        materialJudge.color = .init(tint: .white.withAlphaComponent(0.999),
+                                    texture: .init(try! .load(named:"horse")))
+        let judgeEntity = ModelEntity(mesh: .generateBox(width: Float(2.0), height: Float(2.0), depth: Float(0.01)), materials: [materialJudge])
+        
+        judgeEntity.position.z -= 2
+        judgeEntity.position.y -= 2
+        judgeEntity.position.x -= 1
+
+        // Create the image anchor that the image will be attached to
+        let anchorJudge = AnchorEntity(.image(group: "AR Resources",
+                                          name: "judge"))
+        
+        // Attach image entity to the anchor
+        judgeEntity.setParent(anchorJudge)
+        // Add the anchor to the scene's list of anchors
+        arView.scene.anchors.append(anchorJudge)
         
         return arView
     }
