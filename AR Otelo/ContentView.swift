@@ -4,6 +4,27 @@
 //
 //  Created by Océane PIOCHE on 20/03/2026.
 //
+//  If you're looking to edit this file to add/remove/update entities and anchors and images, you will be
+//  editing the makeUIview function.
+//  Each section relevant to one object is separated with //-------------//
+//  Each section contains :
+//  1) The text/image generation with their visual properties
+//     FOR TEXT :
+//      To change what the text says, modify the .generateText(...) function call
+//      To change the color of the text, modify the materialXXX variable (ex: materialCalm = SimpleMaterial(...))
+//     FOR IMAGE DISPLAY :
+//      To change the image that's displayed as an element, upload the image of your choice in the "Assets" folder
+//      Then change the name of the image file in this line :
+//         materialJudge.color = .init(tint: .white.withAlphaComponent(0.999), texture: .init(try! .load(named:"horse")))
+//      Instead of "horse", change to the name of your image.
+//  2) The image anchor creation with the right image (ex: "watch.png")
+//     To upload a new image, add the image in the 'AR Resources' folder of the "Assets" section,
+//     and change the image name in the anchor declaration
+//       ex: let anchorFly = AnchorEntity(.image(group: "AR Resources", name: "fly"))
+//           Where 'fly.png' is the name of the image file.
+//           /!\ the extension ".png", ".jpg", etc. should NOT appear in the declaration.
+//  3) The animation creation if there is one
+//     Each animation varies depending on the case, refer to the relevant code sections for more details
 
 import SwiftUI
 import ARKit
@@ -46,7 +67,6 @@ struct ARViewContainer: UIViewRepresentable {
         
         // Basic text mesh properties
             // Variables that can be reused when we generate the text
-        let materialVar = SimpleMaterial(color: .systemPink, roughness: 0, isMetallic: true)
         let depthVar: Float = 0.01
         let fontVar = UIFont.systemFont(ofSize: 0.1)
         let containerFrameVar = CGRect(x: -0.5, y: -1, width: 1, height: 1)
@@ -54,6 +74,9 @@ struct ARViewContainer: UIViewRepresentable {
         let lineBreakModeVar : CTLineBreakMode = .byWordWrapping
         
         //---------------------//
+        // Generic text generation + Billboard animation
+        
+        let materialVar = SimpleMaterial(color: .systemPink, roughness: 0, isMetallic: true)
         
         // Text for Object 1 : watch image
         let textMeshResourceWatch : MeshResource = .generateText("Schauen",
@@ -102,6 +125,7 @@ struct ARViewContainer: UIViewRepresentable {
         
         
         //---------------------//
+        // Generic text generation + Spin animation
         
         // New materials for the object
         let materialCalm = SimpleMaterial(color: .systemGray, roughness: 0, isMetallic: false)
@@ -136,6 +160,7 @@ struct ARViewContainer: UIViewRepresentable {
         textEntity2.playAnimation(spinAnimation2)
         
         //---------------------//
+        // Generic Text generation + Appearing animation
         
         // New materials for the object
         let materialMagic = SimpleMaterial(color: .systemRed, roughness: 10, isMetallic: true)
@@ -179,11 +204,11 @@ struct ARViewContainer: UIViewRepresentable {
         
         // (The .repeat parameter allows the animation to loop indefinitely)
 
-
         // Play the five second animation on the entity that will fade-out.
         textEntityMagic.playAnimation(opacityAnimation)
         
         //---------------------//
+        // Generic text generation + Drowning/Dropping animation
         
         // New materials for the object
         let materialDrown = SimpleMaterial(color: .systemIndigo, roughness: 5, isMetallic: false)
@@ -243,6 +268,7 @@ struct ARViewContainer: UIViewRepresentable {
         textEntityDrown.playAnimation(drownAnimation)
         
         //---------------------//
+        // Generic text generation + Flying/Rising animation
         
         // Text for Fly image
         let flyTextMeshResource : MeshResource = .generateText("Fliegen",
@@ -299,6 +325,7 @@ struct ARViewContainer: UIViewRepresentable {
         textEntityFly.playAnimation(flyAnimation)
         
         //---------------------//
+        // Generic text generation + Spin animation
         
         // Text for dance image
         let danceTextMeshResource : MeshResource = .generateText("Tanzen",
@@ -331,6 +358,7 @@ struct ARViewContainer: UIViewRepresentable {
         textEntityDance.playAnimation(spinAnimationDance)
         
         //---------------------//
+        // Generic text generation + Scaling animation
         
         // Text for proud image
         let proudTextMeshResource : MeshResource = .generateText("Stolz",
@@ -380,6 +408,7 @@ struct ARViewContainer: UIViewRepresentable {
         textEntityProud.playAnimation(transformAnimationProud)
         
         //---------------------//
+        // Generic text generation + Jumping/Rising+Dropping animation
         
         // New materials for the object
         let materialJump = SimpleMaterial(color: .systemTeal, roughness: 0, isMetallic: true)
@@ -440,6 +469,7 @@ struct ARViewContainer: UIViewRepresentable {
         textEntityJump.playAnimation(animationSequenceJump)
         
         //---------------------//
+        // Generic text generation + Nodding/Shaking animation
         
         // New materials for the object
         let materialYesNo = SimpleMaterial(color: .systemPurple, roughness: 0, isMetallic: true)
@@ -464,7 +494,7 @@ struct ARViewContainer: UIViewRepresentable {
         arView.scene.anchors.append(anchorYesNo)
 
         // CREATING ANIMATION :
-        // To create the yes no animation, we will combine spin animations with half-quarter revolutions
+        // To create the yes no animation, we will combine spin animations with revolutions of 1/8
         
         // Create spin animations
         let spinAnimationYesStart = try! AnimationResource.makeActionAnimation(for: createSpinAction(axis: 0, revolutions: 0.125),
@@ -480,7 +510,7 @@ struct ARViewContainer: UIViewRepresentable {
                                                                                duration: 0.5,
                                                                   bindTarget: .transform)
         
-        // Create a sequence of animations that will play.
+        // This allows us to play each animation one after the other
         let animationSequenceYesNo = try! AnimationResource
             .sequence(with: [spinAnimationYesStart, spinAnimationYesEnd, spinAnimationNoStart, spinAnimationNoEnd]).repeat(duration: .infinity)
         
@@ -492,12 +522,13 @@ struct ARViewContainer: UIViewRepresentable {
 
         
         //---------------------//
+        // Image 2D display
         
         // Displays image
         // The image has to be loaded in the Assets folder, NOT in "Assets > AR Resources"
         var materialJudge = SimpleMaterial()
         
-        //Basically we create a very thin box (which will look like a rectangle) and we apply the image we want to display as a texture
+        // Basically we create a very thin box (which will look like a rectangle) and we apply the image we want to display as a texture
         materialJudge.color = .init(tint: .white.withAlphaComponent(0.999),
                                     texture: .init(try! .load(named:"horse")))
         let judgeEntity = ModelEntity(mesh: .generateBox(width: Float(2.0), height: Float(2.0), depth: Float(0.01)), materials: [materialJudge])
